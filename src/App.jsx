@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Layout from './components/Layout';
@@ -13,6 +13,8 @@ import Fees from './pages/Fees';
 import Announcements from './pages/Announcements';
 import StudentInformation from './pages/StudentInformation';
 import Evaluations from './pages/Evaluations';
+
+const CampusFacilities = lazy(() => import('./pages/CampusFacilities'));
 
 const routerBasename = import.meta.env.BASE_URL === '/'
   ? undefined
@@ -61,7 +63,14 @@ function App() {
           <Route path="up-mail" element={<Navigate to="/student-information" replace />} />
           <Route path="student-information" element={<StudentInformation />} />
           <Route path="evaluations" element={<Evaluations />} />
-          <Route path="campus-facility" element={<ComingSoon title="Campus Facility & Safety" />} />
+          <Route
+            path="campus-facility"
+            element={
+              <Suspense fallback={<p role="status">Loading campus map...</p>}>
+                <CampusFacilities />
+              </Suspense>
+            }
+          />
           <Route path="college-facility" element={<ComingSoon title="College Facility & Safety" />} />
           <Route path="student-housing" element={<ComingSoon title="Student Housing" />} />
           <Route path="privacy" element={<Privacy />} />
