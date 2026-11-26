@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, Fragment } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Card, Form, Button, Alert } from 'react-bootstrap';
 import { useTranslation } from '../context/TranslationContext.jsx';
 
@@ -14,7 +14,14 @@ const UP_MAIL_DOMAINS = ['@up.edu.ph', '@upmindanao.edu.ph'];
 
 const Login = ({ onLogin }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { translate, language, toggleLanguage } = useTranslation();
+  const from = location.state?.from;
+  const redirectTo = typeof from?.pathname === 'string'
+    && from.pathname.startsWith('/')
+    && !from.pathname.startsWith('//')
+    ? `${from.pathname}${from.search || ''}${from.hash || ''}`
+    : '/dashboard';
   const [studentNumber, setStudentNumber] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false);
@@ -47,7 +54,7 @@ const Login = ({ onLogin }) => {
       await new Promise(resolve => setTimeout(resolve, 500));
       setIsLoading(false);
       onLogin?.({ studentNumber, name: 'Vanz Kean', program: 'BS Computer Science' });
-      navigate('/dashboard', { replace: true });
+      navigate(redirectTo, { replace: true });
     } else {
       setError('Invalid student number or password. Try the demo account.');
     }
@@ -97,13 +104,13 @@ const Login = ({ onLogin }) => {
         photoURL: picture,
         program: 'BS Computer Science',
       });
-      navigate('/dashboard', { replace: true });
+      navigate(redirectTo, { replace: true });
     } catch (err) {
       console.error('Google Sign-In Error:', err);
       setError('Failed to sign in with Google. Please try again.');
       setIsLoading(false);
     }
-  }, [navigate, onLogin]);
+  }, [navigate, onLogin, redirectTo]);
 
   // Initialize Google Sign-In button after script loads
   useEffect(() => {
