@@ -14,6 +14,10 @@ import Announcements from './pages/Announcements';
 import StudentInformation from './pages/StudentInformation';
 import Evaluations from './pages/Evaluations';
 
+const routerBasename = import.meta.env.BASE_URL === '/'
+  ? undefined
+  : import.meta.env.BASE_URL.replace(/\/$/, '');
+
 const ProtectedRoute = ({ user, children }) => {
   if (!user) {
     return <Navigate to="/login" replace />;
@@ -38,7 +42,7 @@ function App() {
   };
 
   return (
-    <Router>
+    <Router basename={routerBasename}>
       <Routes>
         {/* Public routes */}
         <Route path="/login" element={<Login onLogin={handleLogin} />} />

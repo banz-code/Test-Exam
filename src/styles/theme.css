@@ -302,7 +302,7 @@ a:hover {
 .login-page {
   background:
     linear-gradient(rgba(243, 244, 246, 0.7), rgba(243, 244, 246, 0.7)),
-    url("/img/UP-Min-Admin.png") center / cover no-repeat fixed;
+    var(--campus-background-image) center / cover no-repeat fixed;
 }
 
 .login-logo {
@@ -381,7 +381,7 @@ a:hover {
     "sidebar footer";
   background:
     linear-gradient(rgba(243, 244, 246, 0.7), rgba(243, 244, 246, 0.7)),
-    url("/img/UP-Min-Admin.png") center / cover no-repeat fixed;
+    var(--campus-background-image) center / cover no-repeat fixed;
 }
 
 .portal-shell.nav-collapsed {
